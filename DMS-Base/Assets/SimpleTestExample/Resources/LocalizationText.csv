@@ -2,4 +2,6 @@ Text_ID,EN,FR,DE
 BUTTON_SAVE_NAME,Save Name,Nom Enregistrer,Speichern Sie Namen
 BUTTON_BUY_CASH_5,Buy 5 Cash,Acheter 5 espèces,Kaufen 5 Bargeld
 BUTTON_BUY_GEMS_1,Buy 1 Gem,Acheter 1 Gem,1 x Gem
+LABEL_PLAYER_NAME,Player Name,Nom de joueur,Spielername
 LABEL_CURRENT_WEAPON,Current Weapon,Arme actuelle,aktuelle Waffe
+LABEL_FAVORED_ENEMY,Favored Enemy Type,Ennemi juré type,Erzfeind Typ

@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIData : MonoBehaviour
+public class UITestData : MonoBehaviour
 {
-    public Text cashText;
+	public Text nameText;
+	public Text cashText;
     public Text gemsText;
     public InputField nameInput;
-    public Button nameBtn;
-    public Button buyCashBtn;
+	public Button nameBtn;
+	public Button ResetBtn;
+	public Button buyCashBtn;
     public Button buyGemsBtn;
 	public Text saveButtonText;
 	public Text weaponText;
+	public Text enemyText;
 	public Text buyCashBtnText;
 	public Text buyGemsBtnText;
 	public Dropdown weaponDropDown;
+	public Dropdown enemyDropDown;
 	public Dropdown languageDropDown;
 
 	private void Start()
@@ -32,18 +36,10 @@ public class UIData : MonoBehaviour
 		{
 			nameInput.text = PersistentDataManager.GetName();
 		}
-		if (weaponDropDown != null)
-		{
-			weaponDropDown.ClearOptions();
-			//            weaponDropDown.AddListener(delegate { SelectWeapon(weaponDropDown.itemText); });
-			List<WeaponData> curWeaponList = DataManager.Instance.GetWeapons();
-			List<string> weaponNames = new List<string>();
-			foreach (WeaponData weapon in curWeaponList)
-			{
-				weaponNames.Add(weapon.displayName);
-			}
-			weaponDropDown.AddOptions(weaponNames);
-		}
+		string curWeaponId = PersistentDataManager.GetCurrentWeaponId();
+		LoadDropDown<WeaponData>(weaponDropDown, curWeaponId);
+		string curEnemyId = PersistentDataManager.GetFavoredEnemyId();
+		LoadDropDown<EnemyData>(enemyDropDown, curEnemyId);
 		if (languageDropDown != null)
 		{
 			languageDropDown.ClearOptions();
@@ -55,6 +51,30 @@ public class UIData : MonoBehaviour
 			languageDropDown.value = 0;
 		}
 	}
+
+	private void LoadDropDown<T>(Dropdown curDropdown, string currentDataId) where T : BaseStaticData
+	{
+		if (curDropdown != null)
+		{
+			curDropdown.ClearOptions();
+			List<T> curList = StaticDataManager.GetDataList<T>();
+			List<string> dNames = new List<string>();
+			int index = 0;
+			int selIndex = 0;
+			foreach (T item in curList)
+			{
+				dNames.Add(item.displayName);
+				if (currentDataId != "" && currentDataId == item.id)
+				{
+					selIndex = index;
+				}
+				index++;
+			}
+			curDropdown.AddOptions(dNames);
+			curDropdown.value = selIndex;
+		}
+	}
+
 	public void ChangeName()
     {
         if (nameInput != null)
@@ -79,12 +99,11 @@ public class UIData : MonoBehaviour
         if (weaponDD != null && weaponDD.options != null && weaponDD.options.Count > weaponDD.value)
         {
             weaponSelectedDName = weaponDD.options[weaponDD.value].text;
-            DataManager.Instance.SelectWeapon(weaponSelectedDName);
-            Debug.Log("Selected Weapon: " + weaponSelectedDName);
-
-            //TODO: need to look up the weapon's id by the name and assign to the player record
+			Debug.Log("Selected Weapon: " + weaponSelectedDName);
+			DataManager.Instance.SelectWeapon(weaponSelectedDName);
         }
     }
+
 	public void SelectLanguage(Dropdown languageDD)
 	{
 		string languageSelected = "";
@@ -104,12 +123,37 @@ public class UIData : MonoBehaviour
 			{
 				buyGemsBtnText.text = DataManager.GetTranslation(DataManager.LOC_KEY_BUTTON_BUY_GEMS_1, languageSelected);
 			}
+			if (nameText != null)
+			{
+				nameText.text = DataManager.GetTranslation(DataManager.LOC_KEY_LABEL_PLAYER_NAME, languageSelected);
+			}
 			if (weaponText != null)
 			{
 				weaponText.text = DataManager.GetTranslation(DataManager.LOC_KEY_LABEL_CURRENT_WEAPON, languageSelected);
 			}
+			if (enemyText != null)
+			{
+				enemyText.text = DataManager.GetTranslation(DataManager.LOC_KEY_LABEL_FAVORED_ENEMY, languageSelected);
+			}
 
 			Debug.Log("Selected Language: " + languageSelected);
+		}
+	}
+
+	public void ResetData()
+	{
+
+	}
+
+	public void SelectEnemyType(Dropdown typeDD)
+	{
+		string typeSelectedDName = "";
+		if (typeDD != null && typeDD.options != null && typeDD.options.Count > typeDD.value)
+		{
+			typeSelectedDName = typeDD.options[typeDD.value].text;
+			DataManager.Instance.SelectEnemyType(typeSelectedDName);
+			Debug.Log("Selected Enemy Type: " + typeSelectedDName);
+
 		}
 	}
 }

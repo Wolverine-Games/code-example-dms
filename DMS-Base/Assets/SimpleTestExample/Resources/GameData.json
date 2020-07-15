@@ -1,0 +1,49 @@
+{
+   "id":"GameRoot",
+   "displayName":"Game Data",
+   "version":1,
+   "weapons":[
+      {
+         "id":"sword01",
+         "displayName":"Long Sword",
+         "damage":5
+      },
+      {
+         "id":"sword02",
+         "displayName":"Broad Sword",
+         "damage":8
+      },
+      {
+         "id":"bow01",
+         "displayName":"Bow",
+         "damage":3
+      },
+      {
+         "id":"axe01",
+         "displayName":"Axe",
+         "damage":10
+      }
+   ],
+   "enemies":[
+      {
+         "id":"etOrcMelee01",
+         "displayName":"Orc - Weak",
+         "hp":20
+      },
+      {
+         "id":"etOrcMelee02",
+         "displayName":"Orc - Tough",
+         "hp":50
+      },
+      {
+         "id":"etGoblinRanged01",
+         "displayName":"Goblin Archer",
+         "hp":5
+      },
+      {
+         "id":"etOrcRanged01",
+         "displayName":"Orc Archer",
+         "hp":10
+      }
+   ]
+}

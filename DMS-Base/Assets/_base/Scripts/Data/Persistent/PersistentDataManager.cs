@@ -144,6 +144,7 @@ public static class PersistentDataManager
             SaveData();
         }
     }
+
     public static void UpdatePlayerData(WeaponData newWeapon)
     {
         if (_currentPlayer != null)
@@ -154,7 +155,17 @@ public static class PersistentDataManager
         }
     }
 
-    public static string GetName()
+	public static void UpdatePlayerData(EnemyData newEnemy)
+	{
+		if (_currentPlayer != null)
+		{
+			_currentPlayer.favoredEnemy = newEnemy;
+			_currentPlayer.favoredEnemyId = newEnemy.id;
+			SaveData();
+		}
+	}
+
+	public static string GetName()
     {
         if (_currentPlayer != null)
         {
@@ -165,7 +176,32 @@ public static class PersistentDataManager
             return "";
         }
     }
-    public static int GetCurrency(string type)
+
+	public static string GetCurrentWeaponId()
+	{
+		if (_currentPlayer != null)
+		{
+			return _currentPlayer.currentWeaponId;
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public static string GetFavoredEnemyId()
+	{
+		if (_currentPlayer != null)
+		{
+			return _currentPlayer.favoredEnemyId;
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public static int GetCurrency(string type)
     {
         if (_currentPlayer != null)
         {

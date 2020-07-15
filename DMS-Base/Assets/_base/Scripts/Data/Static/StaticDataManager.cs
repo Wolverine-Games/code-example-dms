@@ -11,6 +11,7 @@ public static class StaticDataManager
 
     public static void SetupDefaultData()
     {
+		Debug.LogWarning("StaticDataManager is using default data. This should not happen. Make sure GameData.json is in the Resources folder.");
         _gameData = new GameData();
         _gameData.version = 1;
 
@@ -84,7 +85,11 @@ public static class StaticDataManager
 
     }
 
-    // TODO: remove before production release
+	// NOTE: actual game data should never change on client
+	// TODO: remove before production release
+	// this should only be used initially for creating default game data
+	// Note this will save out to the path location, so you will need to 
+	// copy it from there into the Resources folder
     public static bool SaveGameData(string path)
     {
         if (_gameData == null)
@@ -107,15 +112,13 @@ public static class StaticDataManager
 
     public static bool LoadData(string path)
     {
-        string filename = path + Path.DirectorySeparatorChar + GAMEDATA_FILENAME_PREFIX + GAMEDATA_FILENAME_JSON_EXT;
-        if (File.Exists(filename))
+		string filename = GAMEDATA_FILENAME_PREFIX;// + GAMEDATA_FILENAME_JSON_EXT;
+		TextAsset gameDataText = Resources.Load<TextAsset>(filename);
+        if (gameDataText != null)
         {
-            bool isLoaded = LoadFromJson(filename);
+            bool isLoaded = LoadFromJson(gameDataText.text);
             if (isLoaded)
             {
-                Debug.Log("Game Data Loaded: " + _gameData.id + " version: " + _gameData.version.ToString() +
-                    " " + _gameData.enemies.Count.ToString() + " enemy types, " + _gameData.weapons.Count.ToString() +
-                    " weapon types");
 				MessageManager.SendDataLoadedEvent("GameData", filename);
 
 			}
@@ -128,9 +131,8 @@ public static class StaticDataManager
         }
     }
 
-    private static bool LoadFromJson(string filename)
+    private static bool LoadFromJson(string jsonString)
     {
-        string jsonString = File.ReadAllText(filename);
         //        string jsonString = PlayerPrefs.GetString(PREF_KEY_JSON_SAVE);
         //        Debug.Log("Loading Json: " + jsonString);
         if (!string.IsNullOrEmpty(jsonString))

@@ -12,7 +12,10 @@ public class PlayerData: BasePersistentData
     [NonSerialized]
     public WeaponData currentWeapon;
     public string currentWeaponId;
-    public List<PlayerCurrencyData> wallet = new List<PlayerCurrencyData> ();
+	[NonSerialized]
+	public EnemyData favoredEnemy;
+	public string favoredEnemyId;
+	public List<PlayerCurrencyData> wallet = new List<PlayerCurrencyData> ();
 
     public PlayerData()
     {

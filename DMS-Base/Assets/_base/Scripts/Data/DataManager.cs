@@ -22,7 +22,9 @@ public class DataManager : MonoBehaviourSingleton<DataManager>
 	public static string LOC_KEY_BUTTON_SAVE_NAME = "BUTTON_SAVE_NAME";
 	public static string LOC_KEY_BUTTON_BUY_CASH_5 = "BUTTON_BUY_CASH_5";
 	public static string LOC_KEY_BUTTON_BUY_GEMS_1 = "BUTTON_BUY_GEMS_1";
+	public static string LOC_KEY_LABEL_PLAYER_NAME = "LABEL_PLAYER_NAME";
 	public static string LOC_KEY_LABEL_CURRENT_WEAPON = "LABEL_CURRENT_WEAPON";
+	public static string LOC_KEY_LABEL_FAVORED_ENEMY = "LABEL_FAVORED_ENEMY";
 
 	public static List<CSVTestDataClass> csvData;
     public static List<Dictionary<string, object>> csvResourceDictionary;
@@ -140,27 +142,27 @@ public class DataManager : MonoBehaviourSingleton<DataManager>
         return StaticDataManager.GetDataById<WeaponData>(id);
     }
 
-    public WeaponData GetWeaponByDName(string dName)
-    {
-        List<WeaponData> curWeapons = GetWeapons();
-        foreach (WeaponData weapon in curWeapons)
-        {
-            if (weapon.displayName == dName)
-            {
-                return weapon;
-            }
-        }
-        return null;
-    }
+	public T GetDataByDName<T>(string dName) where T : BaseStaticData
+	{
+		List<T> curDataList = StaticDataManager.GetDataList<T>();
+		foreach (T dataItem in curDataList)
+		{
+			if (dataItem.displayName == dName)
+			{
+				return dataItem;
+			}
+		}
+		return null;
+	}
 
-    public List<WeaponData> GetWeapons()
+	public List<WeaponData> GetWeapons()
     {
         return StaticDataManager.GetDataList<WeaponData>();
     }
 
     public void SelectWeapon(string dName)
     {
-        WeaponData selWeapon = GetWeaponByDName(dName);
+        WeaponData selWeapon = GetDataByDName<WeaponData>(dName);
         PersistentDataManager.UpdatePlayerData(selWeapon);
     }
 
@@ -169,9 +171,16 @@ public class DataManager : MonoBehaviourSingleton<DataManager>
 		currentLanguage = langName;
 	}
 
-	// Update is called once per frame
+	public void SelectEnemyType(string dName)
+	{
+		EnemyData selection = GetDataByDName<EnemyData>(dName);
+		PersistentDataManager.UpdatePlayerData(selection);
+	}
+
 	void Update()
     {
+		// Debugging and testing code
+		// TODO: remove once there are ui buttons for these in the test scene
         if (Input.GetKeyDown(KeyCode.S))
         {
             SavePlayerData();
