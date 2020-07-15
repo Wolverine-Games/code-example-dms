@@ -1,0 +1,27 @@
+{
+   "id":"GameRoot",
+   "displayName":"Game Data",
+   "initialPlayerDataCategories":[
+      {
+         "id":"startingPlayerStandard",
+         "displayName":"Standard Player",
+         "category":"Standard",
+         "startingCash":10,
+         "startingGems":0
+      },
+      {
+         "id":"startingPlayerFounderLevel01",
+         "displayName":"Founder Level 1",
+         "category":"Founder",
+         "startingCash":100,
+         "startingGems":10
+      },
+      {
+         "id":"startingPlayerFounderLevel02",
+         "displayName":"Founder Level 2",
+         "category":"Founder",
+         "startingCash":150,
+         "startingGems":50
+      }
+   ]
+}
